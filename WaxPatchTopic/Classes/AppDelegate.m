@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "SplashViewController.h"
-#import <wax/wax.h>
+#import "SplashViewController.h"		
+#import "wax.h"
 
 @interface AppDelegate ()
 
