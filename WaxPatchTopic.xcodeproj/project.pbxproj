@@ -210,7 +210,6 @@
 		CE52355D1B69EDB0002E621C /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		CE52355E1B69EDB0002E621C /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		CE52355F1B69EDB0002E621C /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
-		CE5235651B69EF99002E621C /* ProtocolLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProtocolLoader.h; sourceTree = "<group>"; };
 		CE52360C1B6A08CF002E621C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CE52360E1B6A08DA002E621C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CE5236101B6A0948002E621C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -467,7 +466,6 @@
 				CE52350D1B69ACE6002E621C /* AppDelegate.h */,
 				CE52350E1B69ACE6002E621C /* AppDelegate.m */,
 				CE52350F1B69ACE6002E621C /* Controllers */,
-				CE5235651B69EF99002E621C /* ProtocolLoader.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
