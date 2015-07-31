@@ -7,8 +7,11 @@
 //
 
 #import "AppDelegate.h"
-#import "SplashViewController.h"		
+#import "SplashViewController.h"
+#import "MainViewController.h"
 #import "wax.h"
+#import "CommonUtility.h"
+#import "Constant.h"
 
 @interface AppDelegate ()
 
@@ -29,11 +32,17 @@
 }
 
 - (void)initWax {
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *destinationPath = [doc stringByAppendingPathComponent:@"lua"];
-    NSString *pp = [[NSString alloc ] initWithFormat:@"%@/?.lua;%@/?/init.lua;", destinationPath, destinationPath];
-    setenv(LUA_PATH, [pp UTF8String], 1);
+    NSString *destinationPath = [[CommonUtility getLocalPatchPath] stringByAppendingPathComponent:kLocalPatchFolder];
+    NSString *env = [[NSString alloc ] initWithFormat:@"%@/?.lua;%@/?/init.lua;", destinationPath, destinationPath];
+    setenv(LUA_PATH, [env UTF8String], 1);
     wax_start("patch", nil);
+}
+
+- (void)loadMainView
+{
+    MainViewController *mainViewController = [[MainViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+    [self.window setRootViewController:navigationController];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

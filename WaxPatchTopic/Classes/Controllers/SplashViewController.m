@@ -7,10 +7,12 @@
 //
 
 #import "SplashViewController.h"
-#import <AFNetworking/AFHTTPRequestOperation.h>
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "AppDelegate.h"
-#import "ZipArchive.h"
+#import "Network.h"
+#import "DownloadPatchManager.h"
+#import "Model.h"
+#import "Constant.h"
 
 @interface SplashViewController ()
 {
@@ -27,35 +29,29 @@
     
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:_HUD];
-    _HUD.detailsLabelText = @"更新中";
     _HUD.square = YES;
-    
-    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *patchZip = [doc stringByAppendingPathComponent:@"patch.zip"];
-    NSURL *patchUrl = [NSURL URLWithString:@"http://lol.e7joy.com/patch1.zip"];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:patchUrl];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [operation setOutputStream:[NSOutputStream outputStreamToFileAtPath:patchZip append:NO]];
     [_HUD show:YES];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+    _HUD.detailsLabelText = @"检查更新中";
+    [[Network sharedInstance] getTopicPatchContentWithComplete:^(BOOL success, NSString *msg, TopicPatchModel *topicPatch) {
+        if (success) {
+            _HUD.detailsLabelText = @"更新中";
+            [DownloadPatchManager downloadAndUnzipPatchByVersion:topicPatch.topicVersion byDownloadUrl:topicPatch.topicPatchURL withComplete:^(BOOL success, NSString *msg) {
+                [_HUD hide:YES];
+                if (success) {
+                    [[NSUserDefaults standardUserDefaults] setValue:topicPatch.topicImage forKey:udTopicImageURL];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    [(AppDelegate *)[UIApplication sharedApplication].delegate loadMainView];
+                }
+            } withError:^(NSError *error) {
+                [_HUD hide:YES];
+            }];
+        } else {
+            [_HUD hide:YES];
+        }
+    } withError:^(NSError *error) {
         [_HUD hide:YES];
-        NSLog(@"下载成功");
-        NSString *destinationPath = [doc stringByAppendingPathComponent:@"lua"];
-        [[NSFileManager defaultManager] removeItemAtPath:destinationPath error:NULL];
-        [[NSFileManager defaultManager] createDirectoryAtPath:destinationPath withIntermediateDirectories:YES attributes:nil error:NULL];
-        
-        ZipArchive *zip = [[ZipArchive alloc] init];
-        [zip UnzipOpenFile:patchZip];
-        [zip UnzipFileTo:destinationPath overWrite:YES];
-        
-        AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        [appDelegate initWax];
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [_HUD hide:YES];
-        NSLog(@"下载失败");
     }];
-    [operation start];
 }
 
 - (void)didReceiveMemoryWarning {
