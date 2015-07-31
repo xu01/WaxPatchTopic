@@ -20,24 +20,28 @@
                              withError:(void(^)(NSError *error))errorBlock {
     NSString *localPatch = [[CommonUtility getLocalPatchPath] stringByAppendingString:[NSString stringWithFormat:@"/%@_%@.%@", kLocalPatchNamePrefix, version, kLocalPatchType]];
     
-    NSURL *patchUrl = [NSURL URLWithString:url];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:patchUrl];
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    [operation setOutputStream:[NSOutputStream outputStreamToFileAtPath:localPatch append:NO]];
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSString *destinationPath = [[CommonUtility getLocalPatchPath] stringByAppendingPathComponent:kLocalPatchFolder];
-        [[NSFileManager defaultManager] removeItemAtPath:destinationPath error:NULL];
-        [[NSFileManager defaultManager] createDirectoryAtPath:destinationPath withIntermediateDirectories:YES attributes:nil error:NULL];
-        
-        ZipArchive *zip = [[ZipArchive alloc] init];
-        [zip UnzipOpenFile:localPatch];
-        [zip UnzipFileTo:destinationPath overWrite:YES];
-        
-        completeBlock(YES, @"更新包下载成功!");
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        errorBlock(error);
-    }];
-    [operation start];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:localPatch]) {
+        completeBlock(YES, @"更新包已存在");
+    } else {
+        NSURL *patchUrl = [NSURL URLWithString:url];
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:patchUrl];
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+        [operation setOutputStream:[NSOutputStream outputStreamToFileAtPath:localPatch append:NO]];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *destinationPath = [[CommonUtility getLocalPatchPath] stringByAppendingPathComponent:kLocalPatchFolder];
+            [[NSFileManager defaultManager] removeItemAtPath:destinationPath error:NULL];
+            [[NSFileManager defaultManager] createDirectoryAtPath:destinationPath withIntermediateDirectories:YES attributes:nil error:NULL];
+            
+            ZipArchive *zip = [[ZipArchive alloc] init];
+            [zip UnzipOpenFile:localPatch];
+            [zip UnzipFileTo:destinationPath overWrite:YES];
+            
+            completeBlock(YES, @"更新包下载成功!");
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            errorBlock(error);
+        }];
+        [operation start];
+    }
 }
 
 @end
