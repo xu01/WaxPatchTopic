@@ -31,13 +31,6 @@
     return YES;
 }
 
-- (void)initWax {
-    NSString *destinationPath = [[CommonUtility getLocalPatchPath] stringByAppendingPathComponent:kLocalPatchFolder];
-    NSString *env = [[NSString alloc ] initWithFormat:@"%@/?.lua;%@/?/init.lua;", destinationPath, destinationPath];
-    setenv(LUA_PATH, [env UTF8String], 1);
-    wax_start("patch", nil);
-}
-
 - (void)loadMainView
 {
     MainViewController *mainViewController = [[MainViewController alloc] init];
