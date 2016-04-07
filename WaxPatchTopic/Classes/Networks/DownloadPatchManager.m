@@ -36,6 +36,9 @@
             [zip UnzipOpenFile:localPatch];
             [zip UnzipFileTo:destinationPath overWrite:YES];
             
+            // 删除 zip
+            [[NSFileManager defaultManager] removeItemAtPath:localPatch error:NULL];
+            
             completeBlock(YES, @"更新包下载成功!");
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             errorBlock(error);
