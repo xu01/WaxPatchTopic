@@ -873,6 +873,7 @@
 				TargetAttributes = {
 					CE5234E21B69AC45002E621C = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 99834UY9GW;
 					};
 					CE5234FB1B69AC45002E621C = {
 						CreatedOnToolsVersion = 6.4;
@@ -1172,7 +1173,7 @@
 			baseConfigurationReference = 3205FE522729917BFA005F5B /* Pods-WaxPatchTopic.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: lingyi xu (XYQHG968KA)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1200,7 +1201,7 @@
 			baseConfigurationReference = E15774D107E86B0811DAB9BF /* Pods-WaxPatchTopic.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: lingyi xu (99834UY9GW)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
